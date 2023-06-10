@@ -19,6 +19,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  isSeller: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 // Export Model
