@@ -1,4 +1,4 @@
-const Artwork = require("../models/artwork");
+const Artwork = require("../models/artModel");
 
 // Controller to create a new artwork
 const createArtwork = async (req, res) => {
