@@ -21,6 +21,17 @@ const getAllArtworks = async (req, res) => {
   }
 };
 
+// Controller to get all artworks of a seller
+const getSellerArtworks = async (req, res) => {
+  try {
+    const sellerId = req.params.sellerId;
+    const artworks = await Artwork.find({ "artist.artistId": sellerId });
+    res.json(artworks);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch artworks" });
+  }
+};
+
 // Controller to get a single artwork by ID
 const getArtworkById = async (req, res) => {
   try {
@@ -65,6 +76,7 @@ const deleteArtwork = async (req, res) => {
 module.exports = {
   createArtwork,
   getAllArtworks,
+  getSellerArtworks,
   getArtworkById,
   updateArtwork,
   deleteArtwork,

@@ -9,6 +9,9 @@ router.post("/", artController.createArtwork);
 // Get all artworks
 router.get("/", artController.getAllArtworks);
 
+// Get all artworks of a particular seller
+router.get("/seller-artworks/:sellerId", artController.getSellerArtworks);
+
 // Get a single artwork by ID
 router.get("/:id", artController.getArtworkById);
 
