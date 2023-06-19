@@ -40,4 +40,34 @@ const loginController = async (req, res) => {
   }
 };
 
-module.exports = { registerController, loginController };
+// Controller function to switch user to seller
+const switchToSeller = async (req, res) => {
+  const { id } = req.params;
+  const { contact, description, instagram, youtube, facebook } =
+    req.body.seller;
+
+  try {
+    const updatedUser = await userModel.findByIdAndUpdate(
+      id,
+      {
+        $set: {
+          isSeller: true,
+          sellerDetails: {
+            contact,
+            description,
+            instagram,
+            youtube,
+            facebook,
+          },
+        },
+      },
+      { new: true }
+    );
+
+    res.json(updatedUser);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to update user" });
+  }
+};
+
+module.exports = { registerController, loginController, switchToSeller };

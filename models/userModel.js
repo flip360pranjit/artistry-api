@@ -23,6 +23,28 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  sellerDetails: {
+    contact: {
+      type: String,
+      default: "",
+    },
+    description: {
+      type: String,
+      default: "",
+    },
+    instagram: {
+      type: String,
+      default: "",
+    },
+    youtube: {
+      type: String,
+      default: "",
+    },
+    facebook: {
+      type: String,
+      default: "",
+    },
+  },
 });
 
 // Export Model
