@@ -1,10 +1,27 @@
 const Wishlist = require("../models/wishlistModel");
 
+// Controller method to get the user's wishlist
+const getWishlist = async (req, res) => {
+  try {
+    const { user } = req.body; // Assuming user authentication is implemented
+
+    const wishlist = await Wishlist.findOne({ user }).populate(
+      "products.product"
+    );
+    if (!wishlist) {
+      res.status(404).json({ error: "Wishlist not found" });
+    } else {
+      res.status(200).json(wishlist);
+    }
+  } catch (error) {
+    res.status(400).json({ error: "Failed to get wishlist" });
+  }
+};
+
 // Controller method to add a product to the wishlist
 const addToWishlist = async (req, res) => {
   try {
-    const { productId } = req.body;
-    const user = req.user; // Assuming user authentication is implemented
+    const { user, productId } = req.body;
 
     const wishlist = await Wishlist.findOne({ user });
     if (!wishlist) {
@@ -14,7 +31,10 @@ const addToWishlist = async (req, res) => {
         products: [{ product: productId }],
       });
       await newWishlist.save();
-      res.status(201).json(newWishlist);
+      const detailedWishlist = await Wishlist.findOne({ user }).populate(
+        "products.product"
+      );
+      res.status(201).json(detailedWishlist);
     } else {
       // If wishlist already exists, add the product to the existing wishlist
       const productIndex = wishlist.products.findIndex(
@@ -23,11 +43,14 @@ const addToWishlist = async (req, res) => {
       if (productIndex === -1) {
         wishlist.products.push({ product: productId });
         await wishlist.save();
-        res.status(200).json(wishlist);
+        const detailedWishlist = await Wishlist.findOne({ user }).populate(
+          "products.product"
+        );
+        res.status(200).json(detailedWishlist);
       } else {
         res
-          .status(400)
-          .json({ error: "Product already exists in the wishlist" });
+          .status(299)
+          .json({ info: "Product already exists in the wishlist" });
       }
     }
   } catch (error) {
@@ -38,8 +61,7 @@ const addToWishlist = async (req, res) => {
 // Controller method to remove a product from the wishlist
 const removeFromWishlist = async (req, res) => {
   try {
-    const { productId } = req.body;
-    const user = req.user; // Assuming user authentication is implemented
+    const { user, productId } = req.body;
 
     const wishlist = await Wishlist.findOne({ user });
     if (!wishlist) {
@@ -51,7 +73,10 @@ const removeFromWishlist = async (req, res) => {
       if (productIndex !== -1) {
         wishlist.products.splice(productIndex, 1);
         await wishlist.save();
-        res.status(200).json(wishlist);
+        const detailedWishlist = await Wishlist.findOne({ user }).populate(
+          "products.product"
+        );
+        res.status(200).json(detailedWishlist);
       } else {
         res.status(400).json({ error: "Product not found in wishlist" });
       }
@@ -62,6 +87,7 @@ const removeFromWishlist = async (req, res) => {
 };
 
 module.exports = {
+  getWishlist,
   addToWishlist,
   removeFromWishlist,
 };

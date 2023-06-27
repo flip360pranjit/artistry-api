@@ -10,4 +10,8 @@ const asyncHandler = (handler) => {
   };
 };
 
-module.exports = { asyncHandler };
+function getDaysInMonth(month, year) {
+  return new Date(year, month, 0).getDate();
+}
+
+module.exports = { asyncHandler, getDaysInMonth };
