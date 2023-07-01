@@ -3,23 +3,19 @@ const mongoose = require("mongoose");
 const orderSchema = new mongoose.Schema({
   customer: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Customer",
+    ref: "User",
     required: true,
   },
-  address: {
-    address: {
+  shippingAddress: {
+    fullName: {
       type: String,
       required: true,
     },
-    city: {
+    phoneNumber: {
       type: String,
       required: true,
     },
-    pincode: {
-      type: String,
-      required: true,
-    },
-    state: {
+    email: {
       type: String,
       required: true,
     },
@@ -27,7 +23,53 @@ const orderSchema = new mongoose.Schema({
       type: String,
       required: true,
     },
-    contactNumber: {
+    streetAddress: {
+      type: String,
+      required: true,
+    },
+    pincode: {
+      type: String,
+      required: true,
+    },
+    city: {
+      type: String,
+      required: true,
+    },
+    state: {
+      type: String,
+      required: true,
+    },
+  },
+  billingAddress: {
+    fullName: {
+      type: String,
+      required: true,
+    },
+    phoneNumber: {
+      type: String,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+    },
+    country: {
+      type: String,
+      required: true,
+    },
+    streetAddress: {
+      type: String,
+      required: true,
+    },
+    pincode: {
+      type: String,
+      required: true,
+    },
+    city: {
+      type: String,
+      required: true,
+    },
+    state: {
       type: String,
       required: true,
     },
@@ -36,7 +78,7 @@ const orderSchema = new mongoose.Schema({
     {
       productID: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Product",
+        ref: "Artwork",
         required: true,
       },
       title: {

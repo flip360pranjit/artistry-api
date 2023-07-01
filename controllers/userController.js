@@ -70,4 +70,51 @@ const switchToSeller = async (req, res) => {
   }
 };
 
-module.exports = { registerController, loginController, switchToSeller };
+// Controller function to switch user to seller
+const startCommisionedWork = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const updatedUser = await userModel.findByIdAndUpdate(
+      id,
+      {
+        $set: {
+          acceptCommisionedOrder: true,
+        },
+      },
+      { new: true }
+    );
+
+    res.json(updatedUser);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to update user" });
+  }
+};
+
+// Controller to get all artworks
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await userModel.find();
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch artworks" });
+  }
+};
+// Controller to get all artworks
+const getAllCommissionedSellers = async (req, res) => {
+  try {
+    const users = await userModel.find({ acceptCommisionedOrder: true });
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch artworks" });
+  }
+};
+
+module.exports = {
+  registerController,
+  loginController,
+  switchToSeller,
+  startCommisionedWork,
+  getAllUsers,
+  getAllCommissionedSellers,
+};

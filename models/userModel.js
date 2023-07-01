@@ -23,6 +23,10 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  acceptCommisionedOrder: {
+    type: Boolean,
+    default: false,
+  },
   sellerDetails: {
     contact: {
       type: String,
@@ -48,5 +52,5 @@ const userSchema = new mongoose.Schema({
 });
 
 // Export Model
-const userModel = mongoose.model("users", userSchema);
+const userModel = mongoose.model("User", userSchema);
 module.exports = userModel;

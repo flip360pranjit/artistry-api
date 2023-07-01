@@ -14,11 +14,13 @@ app.use(express.json());
 app.use("/api/v1/users", require("./routes/userRoutes"));
 app.use("/api/v1/artworks", require("./routes/artRoutes"));
 app.use("/api/v1/orders", require("./routes/orderRoutes"));
+app.use("/api/v1/seller-orders", require("./routes/sellerOrderRoutes"));
 app.use("/api/v1/reviews", require("./routes/reviewRoutes"));
 app.use("/api/v1/address", require("./routes/addressRoutes"));
 app.use("/api/v1/wishlist", require("./routes/wishlistRoutes"));
 app.use("/api/v1/cart", require("./routes/cartRoutes"));
 app.use("/api/v1/coupons", require("./routes/couponRoutes"));
+app.use("/api/v1/commissioned", require("./routes/commissionedArtworkRoutes"));
 
 const PORT = process.env.PORT || 5000;
 

@@ -4,7 +4,7 @@ const sellerOrderSchema = mongoose.Schema(
   {
     seller: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Seller",
+      ref: "User",
       required: true,
     },
     order: {
@@ -32,7 +32,7 @@ const sellerOrderSchema = mongoose.Schema(
       {
         product: {
           type: mongoose.Schema.Types.ObjectId,
-          ref: "Product",
+          ref: "Artwork",
           required: true,
         },
         quantity: {
