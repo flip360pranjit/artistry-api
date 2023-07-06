@@ -1,10 +1,20 @@
 const mongoose = require("mongoose");
 
 const orderSchema = new mongoose.Schema({
-  customer: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
+  orderNo: {
+    type: String,
     required: true,
+  },
+  customer: {
+    customerId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    displayName: {
+      type: String,
+      required: true,
+    },
   },
   shippingAddress: {
     fullName: {
@@ -89,13 +99,29 @@ const orderSchema = new mongoose.Schema({
         type: String,
         required: true,
       },
+      medium: {
+        type: String,
+        required: true,
+      },
+      category: {
+        type: String,
+        required: true,
+      },
+      size: {
+        type: String,
+        required: true,
+      },
+      price: {
+        type: Number,
+        required: true,
+      },
       quantity: {
         type: Number,
         required: true,
       },
       deliveryStatus: {
         type: String,
-        required: true,
+        default: "Processing",
       },
       seller: {
         type: mongoose.Schema.Types.ObjectId,
@@ -110,21 +136,93 @@ const orderSchema = new mongoose.Schema({
       ref: "SellerOrder",
     },
   ],
+  subtotal: {
+    type: Number,
+    required: true,
+  },
+  delivery: {
+    receiptUrl: {
+      type: String,
+      default: "",
+    },
+    charges: {
+      type: Number,
+      required: true,
+    },
+  },
+  tax: {
+    percent: {
+      type: Number,
+      default: 18,
+    },
+    charges: {
+      type: Number,
+      required: true,
+    },
+  },
   total: {
     type: Number,
     required: true,
   },
+  discount: {
+    amount: {
+      type: Number,
+      default: 0,
+    },
+    coupon: {
+      code: {
+        type: String,
+        default: "",
+      },
+      discount: {
+        type: String,
+        default: "",
+      },
+      expirationDate: {
+        type: String,
+        default: "",
+      },
+      offerHeading: {
+        type: String,
+        default: "",
+      },
+      offerDescription: {
+        type: String,
+        default: "",
+      },
+      image: {
+        type: String,
+        default: "",
+      },
+      theme: {
+        type: String,
+        default: "",
+      },
+    },
+  },
   deliveryStatus: {
     type: String,
-    required: true,
+    default: "Processing",
   },
   orderedOn: {
-    type: Date,
-    required: true,
+    date: {
+      type: String,
+      required: true,
+    },
+    time: {
+      type: String,
+      required: true,
+    },
   },
   invoice: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Invoice",
+    invoiceNo: {
+      type: String,
+      required: true,
+    },
+    invoiceUrl: {
+      type: String,
+      required: true,
+    },
   },
 });
 

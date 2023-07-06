@@ -12,25 +12,28 @@ const createOrder = async (req, res) => {
     const productsBySeller = {};
     for (const product of products) {
       if (!productsBySeller[product.seller]) {
-        productsBySeller[product.seller] = [];
+        productsBySeller[product.seller] = {
+          products: [],
+          total: 0,
+        };
       }
-      productsBySeller[product.seller].push(product);
+      productsBySeller[product.seller].products.push(product);
+      productsBySeller[product.seller].total += product.quantity; // Update the total for each seller
     }
 
     // Create separate sellerOrders
     const sellerOrders = [];
     for (const sellerId in productsBySeller) {
-      const sellerProducts = productsBySeller[sellerId];
+      const { products, total } = productsBySeller[sellerId];
 
       const sellerOrder = await SellerOrder.create({
         seller: sellerId,
         order: order._id,
-        customerName,
-        orderDate: order.createdAt,
-        total,
-        deliveryStatus,
-        products: sellerProducts.map((product) => ({
-          product: product._id,
+        customerName: order.customer.displayName,
+        orderedOn: order.orderedOn,
+        total: total,
+        products: products.map((product) => ({
+          product: product.productID,
           quantity: product.quantity,
         })),
       });
@@ -44,6 +47,7 @@ const createOrder = async (req, res) => {
 
     res.status(201).json({ order, sellerOrders });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: "Failed to create order" });
   }
 };

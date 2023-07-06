@@ -21,6 +21,7 @@ app.use("/api/v1/wishlist", require("./routes/wishlistRoutes"));
 app.use("/api/v1/cart", require("./routes/cartRoutes"));
 app.use("/api/v1/coupons", require("./routes/couponRoutes"));
 app.use("/api/v1/commissioned", require("./routes/commissionedArtworkRoutes"));
+app.use("/api/v1/email", require("./routes/emailRoutes"));
 
 const PORT = process.env.PORT || 5000;
 

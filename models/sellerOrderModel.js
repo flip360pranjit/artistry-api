@@ -16,9 +16,15 @@ const sellerOrderSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    orderDate: {
-      type: Date,
-      required: true,
+    orderedOn: {
+      date: {
+        type: String,
+        required: true,
+      },
+      time: {
+        type: String,
+        required: true,
+      },
     },
     total: {
       type: Number,
@@ -26,7 +32,7 @@ const sellerOrderSchema = mongoose.Schema(
     },
     deliveryStatus: {
       type: String,
-      required: true,
+      default: "Processing",
     },
     products: [
       {
