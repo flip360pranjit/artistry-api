@@ -5,7 +5,7 @@ const getAllSellerOrders = async (req, res) => {
   try {
     const sellerOrders = await SellerOrder.find()
       .populate("seller")
-      .populate("order")
+      .populate("order._id")
       .populate("products.product");
     res.json(sellerOrders);
   } catch (error) {

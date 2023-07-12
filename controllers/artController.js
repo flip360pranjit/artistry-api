@@ -10,11 +10,22 @@ const createArtwork = async (req, res) => {
     res.status(500).json({ error: "Failed to create artwork" });
   }
 };
-
 // Controller to get all artworks
 const getAllArtworks = async (req, res) => {
   try {
-    const artworks = await Artwork.find();
+    const artworks = await Artwork.find().populate("artist.artistId");
+    res.json(artworks);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch artworks" });
+  }
+};
+
+// Controller to get active artworks
+const getActiveArtworks = async (req, res) => {
+  try {
+    const artworks = await Artwork.find({ status: "active" }).populate(
+      "artist.artistId"
+    );
     res.json(artworks);
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch artworks" });
@@ -76,6 +87,7 @@ const deleteArtwork = async (req, res) => {
 module.exports = {
   createArtwork,
   getAllArtworks,
+  getActiveArtworks,
   getSellerArtworks,
   getArtworkById,
   updateArtwork,

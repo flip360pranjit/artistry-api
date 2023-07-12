@@ -1,5 +1,6 @@
 const Order = require("../models/orderModel");
 const SellerOrder = require("../models/sellerOrderModel");
+const Artwork = require("../models/artModel");
 const { asyncHandler } = require("../utils/helper");
 
 // Create a new order
@@ -14,24 +15,43 @@ const createOrder = async (req, res) => {
       if (!productsBySeller[product.seller]) {
         productsBySeller[product.seller] = {
           products: [],
-          total: 0,
+          totalAmount: 0,
+          totalQuantity: 0,
         };
       }
       productsBySeller[product.seller].products.push(product);
-      productsBySeller[product.seller].total += product.quantity; // Update the total for each seller
+      productsBySeller[product.seller].totalAmount +=
+        product.price * product.quantity;
+      productsBySeller[product.seller].totalQuantity += product.quantity;
+
+      // Update artwork quantity
+      await Artwork.findByIdAndUpdate(
+        product.productID,
+        { $inc: { quantity: -product.quantity } },
+        { new: true } // To get the updated artwork after the update
+      )
+        .then(async (artwork) => {
+          if (artwork.quantity === 0) {
+            artwork.status = "out of stock";
+            await artwork.save();
+          }
+        })
+        .catch((err) => console.log(err));
     }
 
     // Create separate sellerOrders
     const sellerOrders = [];
     for (const sellerId in productsBySeller) {
-      const { products, total } = productsBySeller[sellerId];
+      const { products, totalAmount, totalQuantity } =
+        productsBySeller[sellerId];
 
       const sellerOrder = await SellerOrder.create({
         seller: sellerId,
-        order: order._id,
+        order: { _id: order._id, orderNo: order.orderNo },
         customerName: order.customer.displayName,
         orderedOn: order.orderedOn,
-        total: total,
+        totalAmount: totalAmount,
+        totalQuantity: totalQuantity,
         products: products.map((product) => ({
           product: product.productID,
           quantity: product.quantity,
@@ -52,6 +72,36 @@ const createOrder = async (req, res) => {
   }
 };
 
+// Get a user's orders
+const getAllOrders = async (req, res) => {
+  try {
+    // Find all orders for the given customerId
+    const orders = await Order.find();
+
+    res.status(200).json({ orders });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Failed to fetch user orders" });
+  }
+};
+
+// Get a user's orders
+const getUserOrders = async (req, res) => {
+  try {
+    const { customerId } = req.params;
+
+    // Find all orders for the given customerId
+    const orders = await Order.find({ "customer.customerId": customerId })
+      .populate("customer.customerId")
+      .populate("sellerOrders");
+
+    res.status(200).json({ orders });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Failed to fetch user orders" });
+  }
+};
+
 // Get an order by ID
 const getOrderById = async (req, res) => {
   try {
@@ -68,7 +118,7 @@ const getOrderById = async (req, res) => {
 
 // Update Delivery Status of Seller Order
 const updateDeliveryStatus = asyncHandler(async (req, res) => {
-  const { sellerOrderId, deliveryStatus } = req.body;
+  const { sellerOrderId, deliveryStatus, shipmentInvoice } = req.body;
 
   // Find the sellerOrder
   const sellerOrder = await SellerOrder.findById(sellerOrderId);
@@ -80,6 +130,7 @@ const updateDeliveryStatus = asyncHandler(async (req, res) => {
 
   // Update the delivery status
   sellerOrder.deliveryStatus = deliveryStatus;
+  if (shipmentInvoice) sellerOrder.shipmentInvoice = shipmentInvoice;
   await sellerOrder.save();
 
   // Find the parent order
@@ -102,6 +153,8 @@ const updateDeliveryStatus = asyncHandler(async (req, res) => {
 
 module.exports = {
   createOrder,
+  getAllOrders,
+  getUserOrders,
   getOrderById,
   updateDeliveryStatus,
 };

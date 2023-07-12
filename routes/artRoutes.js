@@ -7,7 +7,10 @@ const artController = require("../controllers/artController");
 router.post("/", artController.createArtwork);
 
 // Get all artworks
-router.get("/", artController.getAllArtworks);
+router.get("/all", artController.getAllArtworks);
+
+// Get active artworks
+router.get("/", artController.getActiveArtworks);
 
 // Get all artworks of a particular seller
 router.get("/seller-artworks/:sellerId", artController.getSellerArtworks);

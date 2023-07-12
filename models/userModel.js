@@ -36,6 +36,22 @@ const userSchema = new mongoose.Schema({
       type: String,
       default: "",
     },
+    streetAddress: {
+      type: String,
+      default: "",
+    },
+    state: {
+      type: String,
+      default: "",
+    },
+    pincode: {
+      type: String,
+      default: "",
+    },
+    country: {
+      type: String,
+      default: "",
+    },
     instagram: {
       type: String,
       default: "",

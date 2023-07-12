@@ -52,7 +52,11 @@ const artworkSchema = new mongoose.Schema({
   status: {
     type: String,
     required: true,
-    default: "active",
+    default: "pending",
+  },
+  quantity: {
+    type: Number,
+    required: true,
   },
 });
 

@@ -43,8 +43,17 @@ const loginController = async (req, res) => {
 // Controller function to switch user to seller
 const switchToSeller = async (req, res) => {
   const { id } = req.params;
-  const { contact, description, instagram, youtube, facebook } =
-    req.body.seller;
+  const {
+    contact,
+    description,
+    streetAddress,
+    state,
+    pincode,
+    country,
+    instagram,
+    youtube,
+    facebook,
+  } = req.body.seller;
 
   try {
     const updatedUser = await userModel.findByIdAndUpdate(
@@ -55,6 +64,10 @@ const switchToSeller = async (req, res) => {
           sellerDetails: {
             contact,
             description,
+            streetAddress,
+            state,
+            pincode,
+            country,
             instagram,
             youtube,
             facebook,

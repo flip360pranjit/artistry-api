@@ -8,9 +8,15 @@ const sellerOrderSchema = mongoose.Schema(
       required: true,
     },
     order: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Order",
-      required: true,
+      _id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Order",
+        required: true,
+      },
+      orderNo: {
+        type: String,
+        required: true,
+      },
     },
     customerName: {
       type: String,
@@ -26,9 +32,17 @@ const sellerOrderSchema = mongoose.Schema(
         required: true,
       },
     },
-    total: {
+    totalAmount: {
       type: Number,
       required: true,
+    },
+    totalQuantity: {
+      type: Number,
+      required: true,
+    },
+    shipmentInvoice: {
+      type: String,
+      default: "",
     },
     deliveryStatus: {
       type: String,
