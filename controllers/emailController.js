@@ -881,7 +881,7 @@ const sendConfirmationEmail = async (req, res) => {
     // });
     res.status(200).json({ data: info });
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     res.status(500).json({ error });
   }
 };
@@ -1872,7 +1872,7 @@ const sendShipmentEmail = async (req, res) => {
     // });
     res.status(200).json({ data: info });
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     res.status(500).json({ error });
   }
 };

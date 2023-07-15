@@ -36,7 +36,10 @@ const createOrder = async (req, res) => {
             await artwork.save();
           }
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          // console.log(err);
+          res.status(400).json({ error: err });
+        });
     }
 
     // Create separate sellerOrders
@@ -67,7 +70,7 @@ const createOrder = async (req, res) => {
 
     res.status(201).json({ order, sellerOrders });
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     res.status(500).json({ error: "Failed to create order" });
   }
 };
@@ -80,7 +83,7 @@ const getAllOrders = async (req, res) => {
 
     res.status(200).json({ orders });
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     res.status(500).json({ error: "Failed to fetch user orders" });
   }
 };
@@ -97,7 +100,7 @@ const getUserOrders = async (req, res) => {
 
     res.status(200).json({ orders });
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     res.status(500).json({ error: "Failed to fetch user orders" });
   }
 };

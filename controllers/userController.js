@@ -38,7 +38,7 @@ const registerController = async (req, res) => {
       user,
     });
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return res.status(400).json({
       success: false,
       error,
@@ -98,7 +98,7 @@ const socialRegisterController = async (req, res) => {
       user,
     });
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return res.status(400).json({
       success: false,
       message: "Something went wrong!",
@@ -126,7 +126,7 @@ const socialLoginController = async (req, res) => {
       user,
     });
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return res.status(400).json({
       success: false,
       message: "Something went wrong!",
