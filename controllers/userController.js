@@ -1,15 +1,44 @@
+const {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  updateProfile,
+} = require("firebase/auth");
+const { auth } = require("../config/firebase.config");
 const userModel = require("../models/userModel");
 
 // Register Callback
 const registerController = async (req, res) => {
   try {
-    const user = new userModel(req.body);
+    const { email, password } = req.body.user;
+
+    // Create user in Firebase Authentication
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+
+    await updateProfile(userCredential.user, {
+      displayName: req.body.user.fName + " " + req.body.user.lName,
+      photoURL: req.body.downloadURL,
+    });
+    // console.log(userCredential);
+
+    const data = {
+      uid: userCredential.user.uid,
+      displayName: userCredential.user.displayName,
+      email: userCredential.user.email,
+      photoURL: userCredential.user.photoURL,
+    };
+
+    const user = new userModel(data);
     await user.save();
     return res.status(201).json({
       success: true,
       user,
     });
   } catch (error) {
+    console.log(error);
     return res.status(400).json({
       success: false,
       error,
@@ -20,7 +49,17 @@ const registerController = async (req, res) => {
 // Login controller
 const loginController = async (req, res) => {
   try {
-    const user = await userModel.findOne({ uid: req.body.uid });
+    const { email, password } = req.body;
+
+    // Authenticate the user using Firebase Authentication
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+
+    // Find user in MongoDB database
+    const user = await userModel.findOne({ uid: userCredential.user.uid });
 
     if (!user) {
       return res.status(404).json({
@@ -28,6 +67,7 @@ const loginController = async (req, res) => {
         message: "User not found!",
       });
     }
+
     return res.status(200).json({
       success: true,
       user,
@@ -36,6 +76,60 @@ const loginController = async (req, res) => {
     return res.status(400).json({
       success: false,
       error,
+    });
+  }
+};
+// Social Register Callback
+const socialRegisterController = async (req, res) => {
+  try {
+    const data = req.body;
+
+    const existingUser = await userModel.findOne({ email: data.email });
+    if (existingUser) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Email already exists" });
+    }
+
+    const user = new userModel(data);
+    await user.save();
+    return res.status(201).json({
+      success: true,
+      user,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({
+      success: false,
+      message: "Something went wrong!",
+    });
+  }
+};
+
+// Social Login controller
+const socialLoginController = async (req, res) => {
+  try {
+    const userCredential = req.body;
+
+    // Find user in MongoDB database
+    const user = await userModel.findOne({ uid: userCredential.uid });
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found!",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      user,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({
+      success: false,
+      message: "Something went wrong!",
     });
   }
 };
@@ -126,6 +220,8 @@ const getAllCommissionedSellers = async (req, res) => {
 module.exports = {
   registerController,
   loginController,
+  socialRegisterController,
+  socialLoginController,
   switchToSeller,
   startCommisionedWork,
   getAllUsers,
