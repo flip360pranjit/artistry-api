@@ -86,9 +86,10 @@ const socialRegisterController = async (req, res) => {
 
     const existingUser = await userModel.findOne({ email: data.email });
     if (existingUser) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Email already exists" });
+      return res.status(200).json({
+        success: true,
+        user:existingUser,
+      });
     }
 
     const user = new userModel(data);
