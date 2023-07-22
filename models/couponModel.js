@@ -27,6 +27,10 @@ const couponSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  imageWebp: {
+    type: String,
+    required: true,
+  },
   theme: {
     type: String,
     required: true,

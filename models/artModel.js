@@ -41,6 +41,10 @@ const artworkSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  imageWebp: {
+    type: String,
+    required: true,
+  },
   createdAt: {
     type: Date,
     required: true,

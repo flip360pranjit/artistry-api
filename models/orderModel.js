@@ -99,6 +99,10 @@ const orderSchema = new mongoose.Schema({
         type: String,
         required: true,
       },
+      imageWebp: {
+        type: String,
+        required: true,
+      },
       medium: {
         type: String,
         required: true,
@@ -193,6 +197,10 @@ const orderSchema = new mongoose.Schema({
       image: {
         type: String,
         default: "",
+      },
+      imageWebp: {
+        type: String,
+        required: true,
       },
       theme: {
         type: String,

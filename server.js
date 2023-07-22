@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const connectDb = require("./config/connectDb");
+const { createImageUploadSignature } = require("./utils/generateSignature");
 
 const app = express();
 
@@ -24,6 +25,8 @@ app.use("/api/v1/commissioned", require("./routes/commissionedArtworkRoutes"));
 app.use("/api/v1/email", require("./routes/emailRoutes"));
 app.use("/api/v1/contact", require("./routes/contactRoutes"));
 app.use("/api/v1/newsletter", require("./routes/newsletterRoutes"));
+
+app.post("/api/v1/get-signature", createImageUploadSignature);
 
 const PORT = process.env.PORT || 5000;
 

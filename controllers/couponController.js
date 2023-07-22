@@ -11,6 +11,7 @@ const createCoupon = async (req, res) => {
       offerHeading,
       offerDescription,
       image,
+      imageWebp,
       theme,
     } = req.body;
 
@@ -45,6 +46,7 @@ const createCoupon = async (req, res) => {
       offerHeading,
       offerDescription,
       image,
+      imageWebp,
       theme,
     });
     await coupon.save();

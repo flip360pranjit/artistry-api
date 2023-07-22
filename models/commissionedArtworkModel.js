@@ -40,6 +40,9 @@ const commissionedArtworkSchema = new mongoose.Schema({
   referenceImage: {
     type: String,
   },
+  referenceImageWebp: {
+    type: String,
+  },
   dateTime: {
     date: {
       type: String,
