@@ -6,6 +6,7 @@ const { asyncHandler } = require("../utils/helper");
 // Create a new order
 const createOrder = async (req, res) => {
   try {
+    // console.log(req.body);
     const order = new Order(req.body);
     const { products } = req.body;
 
@@ -70,7 +71,7 @@ const createOrder = async (req, res) => {
 
     res.status(201).json({ order, sellerOrders });
   } catch (error) {
-    // console.log(error);
+    console.log(error);
     res.status(500).json({ error: "Failed to create order" });
   }
 };

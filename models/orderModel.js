@@ -200,7 +200,7 @@ const orderSchema = new mongoose.Schema({
       },
       imageWebp: {
         type: String,
-        required: true,
+        default: "",
       },
       theme: {
         type: String,
