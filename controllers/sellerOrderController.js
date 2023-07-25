@@ -32,7 +32,7 @@ const getOrderById = async (req, res) => {
   const { orderId } = req.params;
   try {
     const order = await SellerOrder.findById(orderId)
-      .populate("order")
+      .populate("order._id")
       .populate("products.product");
 
     if (!order) {
