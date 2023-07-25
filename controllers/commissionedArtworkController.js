@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const CommissionedArtwork = require("../models/commissionedArtworkModel");
+const { sendCommissionedWorkAcceptanceEmail } = require("./emailController");
 
 // Controller actions
 const createCommissionedArtwork = async (req, res) => {
@@ -48,10 +49,23 @@ const acceptWork = async (req, res) => {
       orderId,
       { status: "Accepted" },
       { new: true }
-    );
-    res.json(commissionedArtwork);
+    ).populate("artist");
+
+    await sendCommissionedWorkAcceptanceEmail(commissionedArtwork)
+      .then(() => {
+        // Sending the response after email is sent
+        return res.status(200).json(commissionedArtwork);
+      })
+      .catch((error) => {
+        // console.error("Error accepting work:", error);
+        return res
+          .status(500)
+          .json({ error: "Unable to accept work at the moment." });
+      });
   } catch (error) {
-    res.status(500).json({ error: "Failed to accept commissioned artwork." });
+    return res
+      .status(500)
+      .json({ error: "Failed to accept commissioned artwork." });
   }
 };
 

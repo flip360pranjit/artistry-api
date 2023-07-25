@@ -32,8 +32,9 @@ const createOrder = async (req, res) => {
         { new: true } // To get the updated artwork after the update
       )
         .then(async (artwork) => {
-          if (artwork.quantity === 0) {
+          if (artwork.quantity <= 0) {
             artwork.status = "out of stock";
+            artwork.quantity = 0;
             await artwork.save();
           }
         })
@@ -69,9 +70,13 @@ const createOrder = async (req, res) => {
     order.sellerOrders = sellerOrders.map((sellerOrder) => sellerOrder._id);
     await order.save();
 
-    res.status(201).json({ order, sellerOrders });
+    const completeOrder = await Order.findById(order._id)
+      .populate("customer.customerId")
+      .populate("sellerOrders");
+
+    res.status(201).json({ order: completeOrder, sellerOrders });
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     res.status(500).json({ error: "Failed to create order" });
   }
 };

@@ -14,8 +14,8 @@ const sendConfirmationEmail = async (req, res) => {
 
     const info = await transporter.sendMail({
       from: `"The Artistry" <${process.env.CUSTOMER_SERVICE_EMAIL}>`, // sender address
-      to: "hahahahohoho770@gmail.com", // list of receivers
-      subject: "Congratulations! Order Successfully Placed", // Subject line
+      to: `${order.customer.customerId.email}`, // list of receivers
+      subject: `Congratulations! Order Successfully Placed. Order: ${order.orderNo}`, // Subject line
       html: `<!DOCTYPE html>
       <html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" lang="en">
       
@@ -265,11 +265,11 @@ const sendConfirmationEmail = async (req, res) => {
                                         <p style="margin: 0; margin-bottom: 16px;"><strong>${
                                           order.shippingAddress.fullName
                                         }</strong></p>
-                                        <p style="margin: 0; margin-bottom: 16px;"><a href="tel:${
+                                        <p style="margin: 0; margin-bottom: 16px;"><a href="tel:+${
                                           order.shippingAddress.phoneNumber
                                         }" target="_blank" title="tel:${
         order.shippingAddress.phoneNumber
-      }" style="text-decoration: underline; color: #797679;" rel="noopener">${
+      }" style="text-decoration: underline; color: #797679;" rel="noopener">+${
         order.shippingAddress.phoneNumber
       }</a></p>
                                         <p style="margin: 0;"><a href="mailto:${
@@ -1877,4 +1877,520 @@ const sendShipmentEmail = async (req, res) => {
   }
 };
 
-module.exports = { sendConfirmationEmail, sendShipmentEmail };
+const sendCommissionedWorkAcceptanceEmail = (order) => {
+  return new Promise((resolve, reject) => {
+    transporter.sendMail(
+      {
+        from: `"The Artistry" <${process.env.CUSTOMER_SERVICE_EMAIL}>`, // sender address
+        to: `${order.email}`, // list of receivers
+        subject: `Congratulations! Commission Request Accepted! Order: ORD-${order._id.toString()}`, // Subject line
+        html: `<!DOCTYPE html>
+      <html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" lang="en">
+      
+      <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"><!--[if mso]><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch><o:AllowPNG/></o:OfficeDocumentSettings></xml><![endif]-->
+        <style>
+          * {
+            box-sizing: border-box;
+          }
+      
+          body {
+            margin: 0;
+            padding: 0;
+          }
+      
+          a[x-apple-data-detectors] {
+            color: inherit !important;
+            text-decoration: inherit !important;
+          }
+      
+          #MessageViewBody a {
+            color: inherit;
+            text-decoration: none;
+          }
+      
+          p {
+            line-height: inherit
+          }
+      
+          .desktop_hide,
+          .desktop_hide table {
+            mso-hide: all;
+            display: none;
+            max-height: 0px;
+            overflow: hidden;
+          }
+      
+          .image_block img+div {
+            display: none;
+          }
+      
+          @media (max-width:620px) {
+            .desktop_hide table.icons-inner {
+              display: inline-block !important;
+            }
+      
+            .icons-inner {
+              text-align: center;
+            }
+      
+            .icons-inner td {
+              margin: 0 auto;
+            }
+      
+            .image_block img.fullWidth {
+              max-width: 100% !important;
+            }
+      
+            .social_block.desktop_hide .social-table {
+              display: inline-block !important;
+            }
+      
+            .row-content {
+              width: 100% !important;
+            }
+      
+            .stack .column {
+              width: 100%;
+              display: block;
+            }
+      
+            .mobile_hide {
+              max-width: 0;
+              min-height: 0;
+              max-height: 0;
+              font-size: 0;
+              display: none;
+              overflow: hidden;
+            }
+      
+            .desktop_hide,
+            .desktop_hide table {
+              max-height: none !important;
+              display: table !important;
+            }
+          }
+        </style>
+      </head>
+      
+      <body style="text-size-adjust: none; background-color: #fff; margin: 0; padding: 0;">
+        <table class="nl-container" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #fff;">
+          <tbody>
+            <tr>
+              <td>
+                <table class="row row-1" align="center" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #ffffff;">
+                  <tbody>
+                    <tr>
+                      <td>
+                        <table class="row-content" align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; color: #000; background-color: #f5f5f5; width: 600px; margin: 0 auto;" width="600">
+                          <tbody>
+                            <tr>
+                              <td class="column column-1" width="100%" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; text-align: left; font-weight: 400; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; padding-top: 5px; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;">
+                                <table class="image_block block-1" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+                                  <tr>
+                                    <td class="pad" style="width:100%;padding-right:0px;padding-left:0px;">
+                                      <div class="alignment" align="center" style="line-height:10px"><img class="fullWidth" src="https://res.cloudinary.com/dgjsucqux/image/upload/v1688539042/artistry/assets/My_project_2_x4iytf.png" style="height: auto; display: block; border: 0; max-width: 472px; width: 100%;" width="472"></div>
+                                    </td>
+                                  </tr>
+                                </table>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <table class="row row-2" align="center" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #ffffff;">
+                  <tbody>
+                    <tr>
+                      <td>
+                        <table class="row-content stack" align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; color: #000; background-color: #fff; border-radius: 0; width: 600px; margin: 0 auto;" width="600">
+                          <tbody>
+                            <tr>
+                              <td class="column column-1" width="100%" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; text-align: left; font-weight: 400; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; padding-top: 5px; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;">
+                                <table class="paragraph_block block-1" width="100%" border="0" cellpadding="10" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;">
+                                  <tr>
+                                    <td class="pad">
+                                      <div style="color:#101112;direction:ltr;font-family:Arial, Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:120%;text-align:left;mso-line-height-alt:19.2px;">
+                                        <p style="margin: 0; margin-bottom: 16px;">&nbsp;</p>
+                                        <p style="margin: 0; margin-bottom: 16px;">Hi ${order.fullName},</p>
+                                        <p style="margin: 0; margin-bottom: 16px;">We are thrilled to inform you that your commission request has been accepted by the talented artist on Artistry! Your request to commission a custom artwork has been acknowledged, and the artist is excited to bring your vision to life.</p>
+                                        <p style="margin: 0;">Here are the details of your order:</p>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </table>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <table class="row row-3" align="center" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+                  <tbody>
+                    <tr>
+                      <td>
+                        <table class="row-content" align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; color: #000; background-color: #e5f0fb; border-radius: 0; width: 600px; margin: 0 auto;" width="600">
+                          <tbody>
+                            <tr>
+                              <td class="column column-1" width="41.666666666666664%" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; text-align: left; font-weight: 400; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; padding-top: 5px; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;">
+                                <table class="paragraph_block block-1" width="100%" border="0" cellpadding="10" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;">
+                                  <tr>
+                                    <td class="pad">
+                                      <div style="color:#101112;direction:ltr;font-family:Arial, Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:120%;text-align:left;mso-line-height-alt:19.2px;">
+                                        <p style="margin: 0;">Artist</p>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </table>
+                                <table class="paragraph_block block-2" width="100%" border="0" cellpadding="10" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;">
+                                  <tr>
+                                    <td class="pad">
+                                      <div style="color:#101112;direction:ltr;font-family:Arial, Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:120%;text-align:left;mso-line-height-alt:19.2px;">
+                                        <p style="margin: 0;">Price</p>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </table>
+                              </td>
+                              <td class="column column-2" width="58.333333333333336%" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; text-align: left; font-weight: 400; padding-bottom: 5px; padding-top: 5px; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;">
+                                <table class="paragraph_block block-1" width="100%" border="0" cellpadding="10" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;">
+                                  <tr>
+                                    <td class="pad">
+                                      <div style="color:#101112;direction:ltr;font-family:Arial, Helvetica, sans-serif;font-size:16px;font-weight:700;letter-spacing:0px;line-height:120%;text-align:right;mso-line-height-alt:19.2px;">
+                                        <p style="margin: 0;">${order.artist.displayName}</p>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </table>
+                                <table class="paragraph_block block-2" width="100%" border="0" cellpadding="10" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;">
+                                  <tr>
+                                    <td class="pad">
+                                      <div style="color:#16acf8;direction:ltr;font-family:Arial, Helvetica, sans-serif;font-size:16px;font-weight:700;letter-spacing:0px;line-height:120%;text-align:right;mso-line-height-alt:19.2px;">
+                                        <p style="margin: 0;">To be decided</p>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </table>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <table class="row row-4" align="center" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+                  <tbody>
+                    <tr>
+                      <td>
+                        <table class="row-content stack" align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; color: #000; background-color: #e5f0fb; border-radius: 0; width: 600px; margin: 0 auto;" width="600">
+                          <tbody>
+                            <tr>
+                              <td class="column column-1" width="100%" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; text-align: left; font-weight: 400; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; padding-top: 5px; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;">
+                                <table class="paragraph_block block-1" width="100%" border="0" cellpadding="10" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;">
+                                  <tr>
+                                    <td class="pad">
+                                      <div style="color:#101112;direction:ltr;font-family:Arial, Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:120%;text-align:left;mso-line-height-alt:19.2px;">
+                                        <p style="margin: 0;">Reference Image</p>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </table>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <table class="row row-5" align="center" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+                  <tbody>
+                    <tr>
+                      <td>
+                        <table class="row-content stack" align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; color: #000; background-color: #e5f0fb; border-radius: 0; width: 600px; margin: 0 auto;" width="600">
+                          <tbody>
+                            <tr>
+                              <td class="column column-1" width="100%" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; text-align: left; font-weight: 400; padding-bottom: 15px; padding-left: 15px; padding-right: 15px; padding-top: 15px; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;">
+                                <table class="image_block block-1" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+                                  <tr>
+                                    <td class="pad" style="width:100%;">
+                                      <div class="alignment" align="center" style="line-height:10px"><img src="${order.referenceImage}" style="height: auto; display: block; border: 0; max-width: 570px; width: 100%;" width="570"></div>
+                                    </td>
+                                  </tr>
+                                </table>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <table class="row row-6" align="center" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+                  <tbody>
+                    <tr>
+                      <td>
+                        <table class="row-content stack" align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; color: #000; border-radius: 0; width: 600px; margin: 0 auto;" width="600">
+                          <tbody>
+                            <tr>
+                              <td class="column column-1" width="100%" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; text-align: left; font-weight: 400; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; padding-top: 5px; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;">
+                                <table class="paragraph_block block-1" width="100%" border="0" cellpadding="10" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;">
+                                  <tr>
+                                    <td class="pad">
+                                      <div style="color:#101112;direction:ltr;font-family:Arial, Helvetica, sans-serif;font-size:15px;font-weight:400;letter-spacing:0px;line-height:120%;text-align:left;mso-line-height-alt:18px;">
+                                        <p style="margin: 0; margin-bottom: 16px;">The artist will now initiate contact with you to discuss the details and specifications of the artwork. They will collaborate with you closely to ensure that the final piece meets your expectations and captures the essence of your vision.<a href="http://localhost:3000/contact" target="_blank" style="text-decoration: none; color: #8a3c90;" rel="noopener"></a></p>
+                                        <p style="margin: 0; margin-bottom: 16px;">To get started, the artist may request additional information, such as reference images, color preferences, or any specific themes you would like to incorporate into the artwork. Feel free to share any ideas or inspirations you have in mind to help the artist create a masterpiece that resonates with you.</p>
+                                        <p style="margin: 0; margin-bottom: 16px;">If you have any questions or need any assistance throughout the process, don't hesitate to reach out to our support team. We are here to help you every step of the way.</p>
+                                        <p style="margin: 0; margin-bottom: 16px;">Once again, thank you for choosing Artistry as your platform to connect with talented artists. We look forward to witnessing the creative journey unfold and seeing the remarkable artwork that will be crafted exclusively for you.</p>
+                                        <p style="margin: 0; margin-bottom: 16px;">&nbsp;</p>
+                                        <p style="margin: 0; margin-bottom: 16px;">Best regards</p>
+                                        <p style="margin: 0;"><strong>The Artistry Team</strong></p>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </table>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <table class="row row-7" align="center" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+                  <tbody>
+                    <tr>
+                      <td>
+                        <table class="row-content stack" align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; color: #000; border-radius: 0; width: 600px; margin: 0 auto;" width="600">
+                          <tbody>
+                            <tr>
+                              <td class="column column-1" width="100%" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; text-align: left; font-weight: 400; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; padding-top: 5px; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;">
+                                <table class="paragraph_block block-1" width="100%" border="0" cellpadding="10" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;">
+                                  <tr>
+                                    <td class="pad">
+                                      <div style="color:#626263;direction:ltr;font-family:Arial, Helvetica, sans-serif;font-size:12px;font-weight:400;letter-spacing:0px;line-height:120%;text-align:center;mso-line-height-alt:14.399999999999999px;">
+                                        <p style="margin: 0; margin-bottom: 16px;">&nbsp;</p>
+                                        <p style="margin: 0;">Note: The artist's personal contact details will not be shared to protect their privacy. Please refrain from sharing any personal information with the artist outside of the Artistry platform. All communication related to the commission process will be facilitated through our secure messaging system.</p>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </table>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <table class="row row-17" align="center" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+                  <tbody>
+                    <tr>
+                      <td>
+                        <table class="row-content" align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; color: #000; background-color: #e5f0fb; border-radius: 0; width: 600px; margin: 0 auto;" width="600">
+                          <tbody>
+                            <tr>
+                              <td class="column column-1" width="66.66666666666667%" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; text-align: left; font-weight: 400; border-bottom: 2px solid #FFFFFF; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; padding-top: 5px; vertical-align: top; border-top: 0px; border-right: 0px; border-left: 0px;">
+                                <table class="paragraph_block block-1" width="100%" border="0" cellpadding="10" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;">
+                                  <tr>
+                                    <td class="pad">
+                                      <div style="color:#101112;direction:ltr;font-family:Arial, Helvetica, sans-serif;font-size:16px;font-weight:700;letter-spacing:0px;line-height:120%;text-align:center;mso-line-height-alt:19.2px;">
+                                        <p style="margin: 0;">Show us some love on social media</p>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </table>
+                                <table class="social_block block-2" width="100%" border="0" cellpadding="10" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+                                  <tr>
+                                    <td class="pad">
+                                      <div class="alignment" align="center">
+                                        <table class="social-table" width="184px" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; display: inline-block;">
+                                          <tr>
+                                            <td style="padding:0 7px 0 7px;"><a href="https://instagram.com/theartistry.online?igshid=ZGUzMzM3NWJiOQ==" target="_blank"><img src="https://app-rsrc.getbee.io/public/resources/social-networks-icon-sets/circle-color/instagram@2x.png" width="32" height="32" alt="Instagram" title="instagram" style="height: auto; display: block; border: 0;"></a></td>
+                                            <td style="padding:0 7px 0 7px;"><a href="https://www.linkedin.com/in/pranjit-kakoti-493028229" target="_blank"><img src="https://app-rsrc.getbee.io/public/resources/social-networks-icon-sets/circle-color/linkedin@2x.png" width="32" height="32" alt="Linkedin" title="linkedin" style="height: auto; display: block; border: 0;"></a></td>
+                                            <td style="padding:0 7px 0 7px;"><a href="https://youtube.com/@theartistry.online" target="_blank"><img src="https://app-rsrc.getbee.io/public/resources/social-networks-icon-sets/circle-color/youtube@2x.png" width="32" height="32" alt="YouTube" title="YouTube" style="height: auto; display: block; border: 0;"></a></td>
+                                            <td style="padding:0 7px 0 7px;"><a href="https://www.facebook.com/The-Artistry-115015941645828" target="_blank"><img src="https://app-rsrc.getbee.io/public/resources/social-networks-icon-sets/circle-color/facebook@2x.png" width="32" height="32" alt="Facebook" title="facebook" style="height: auto; display: block; border: 0;"></a></td>
+                                          </tr>
+                                        </table>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </table>
+                              </td>
+                              <td class="column column-2" width="33.333333333333336%" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; text-align: left; font-weight: 400; border-bottom: 2px solid #FFFFFF; padding-bottom: 5px; padding-top: 5px; vertical-align: top; border-top: 0px; border-right: 0px; border-left: 0px;">
+                                <table class="paragraph_block block-1" width="100%" border="0" cellpadding="10" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;">
+                                  <tr>
+                                    <td class="pad">
+                                      <div style="color:#101112;direction:ltr;font-family:Arial, Helvetica, sans-serif;font-size:16px;font-weight:700;letter-spacing:0px;line-height:120%;text-align:center;mso-line-height-alt:19.2px;">
+                                        <p style="margin: 0;">Visit our Website</p>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </table>
+                                <table class="social_block block-2" width="100%" border="0" cellpadding="10" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+                                  <tr>
+                                    <td class="pad">
+                                      <div class="alignment" align="center">
+                                        <table class="social-table" width="36px" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; display: inline-block;">
+                                          <tr>
+                                            <td style="padding:0 2px 0 2px;"><a href="${process.env.CLIENT_URL}" target="_blank"><img src="https://3eedc1e6f5.imgdist.com/public/users/Integrators/BeeProAgency/1017196_1002102/website_dmdgco.png" width="32" height="32" alt="Website" title="Website" style="height: auto; display: block; border: 0;"></a></td>
+                                          </tr>
+                                        </table>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </table>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <table class="row row-18" align="center" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+                  <tbody>
+                    <tr>
+                      <td>
+                        <table class="row-content" align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; color: #000; background-color: #e5f0fb; border-radius: 0; width: 600px; margin: 0 auto;" width="600">
+                          <tbody>
+                            <tr>
+                              <td class="column column-1" width="41.666666666666664%" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; text-align: left; font-weight: 400; padding-bottom: 5px; padding-top: 5px; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;">
+                                <table class="paragraph_block block-1" width="100%" border="0" cellpadding="10" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;">
+                                  <tr>
+                                    <td class="pad">
+                                      <div style="color:#101112;direction:ltr;font-family:Arial, Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:120%;text-align:center;mso-line-height-alt:19.2px;">
+                                        <p style="margin: 0;"><a href="${process.env.CLIENT_URL}/terms&conditions" target="_blank" style="text-decoration: none; color: #0c74e0;" rel="noopener">Terms and Conditions</a></p>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </table>
+                              </td>
+                              <td class="column column-2" width="33.333333333333336%" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; text-align: left; font-weight: 400; padding-bottom: 5px; padding-top: 5px; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;">
+                                <table class="paragraph_block block-1" width="100%" border="0" cellpadding="10" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;">
+                                  <tr>
+                                    <td class="pad">
+                                      <div style="color:#101112;direction:ltr;font-family:Arial, Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:120%;text-align:center;mso-line-height-alt:19.2px;">
+                                        <p style="margin: 0;"><a href="${process.env.CLIENT_URL}/contact" target="_blank" style="text-decoration: none; color: #0c74e0;" rel="noopener">Contact Us</a></p>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </table>
+                              </td>
+                              <td class="column column-3" width="25%" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; text-align: left; font-weight: 400; padding-bottom: 5px; padding-top: 5px; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;">
+                                <table class="paragraph_block block-1" width="100%" border="0" cellpadding="10" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;">
+                                  <tr>
+                                    <td class="pad">
+                                      <div style="color:#101112;direction:ltr;font-family:Arial, Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:120%;text-align:center;mso-line-height-alt:19.2px;">
+                                        <p style="margin: 0;"><a href="${process.env.CLIENT_URL}/about" target="_blank" style="text-decoration: none; color: #0c74e0;" rel="noopener">About Us</a></p>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </table>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <table class="row row-19" align="center" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+                  <tbody>
+                    <tr>
+                      <td>
+                        <table class="row-content stack" align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; color: #000; background-color: #e5f0fb; border-radius: 0; width: 600px; margin: 0 auto;" width="600">
+                          <tbody>
+                            <tr>
+                              <td class="column column-1" width="100%" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; text-align: left; font-weight: 400; padding-bottom: 5px; padding-top: 5px; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;">
+                                <table class="paragraph_block block-1" width="100%" border="0" cellpadding="10" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;">
+                                  <tr>
+                                    <td class="pad">
+                                      <div style="color:#101112;direction:ltr;font-family:Arial, Helvetica, sans-serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:120%;text-align:center;mso-line-height-alt:19.2px;">
+                                        <p style="margin: 0;"><a href="https://www.linkedin.com/in/pranjit-kakoti-493028229" target="_blank" style="text-decoration: none; color: #0c74e0;" rel="noopener">© flip360pranjit/TheArtistry 2023.</a></p>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </table>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <table class="row row-20" align="center" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+                  <tbody>
+                    <tr>
+                      <td>
+                        <table class="row-content stack" align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; color: #000; width: 600px; margin: 0 auto;" width="600">
+                          <tbody>
+                            <tr>
+                              <td class="column column-1" width="100%" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; text-align: left; font-weight: 400; padding-bottom: 5px; padding-top: 5px; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;">
+                                <table class="icons_block block-1" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+                                  <tr>
+                                    <td class="pad" style="vertical-align: middle; color: #9d9d9d; font-family: inherit; font-size: 15px; padding-bottom: 5px; padding-top: 5px; text-align: center;">
+                                      <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
+                                        <tr>
+                                          <td class="alignment" style="vertical-align: middle; text-align: center;"><!--[if vml]><table align="left" cellpadding="0" cellspacing="0" role="presentation" style="display:inline-block;padding-left:0px;padding-right:0px;mso-table-lspace: 0pt;mso-table-rspace: 0pt;"><![endif]-->
+                                            <!--[if !vml]><!-->
+                                            <table class="icons-inner" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; display: inline-block; margin-right: -4px; padding-left: 0px; padding-right: 0px;" cellpadding="0" cellspacing="0" role="presentation"><!--<![endif]-->
+                                              <tr>
+                                                <td style="vertical-align: middle; text-align: center; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 6px;"><a href="https://www.designedwithbee.com/?utm_source=editor&utm_medium=bee_pro&utm_campaign=free_footer_link" target="_blank" style="text-decoration: none;"><img class="icon" alt="Designed with BEE" src="https://d1oco4z2z1fhwp.cloudfront.net/assets/bee.png" height="32" width="34" align="center" style="height: auto; display: block; margin: 0 auto; border: 0;"></a></td>
+                                                <td style="font-family: Arial, Helvetica, sans-serif; font-size: 15px; color: #9d9d9d; vertical-align: middle; letter-spacing: undefined; text-align: center;"><a href="https://www.designedwithbee.com/?utm_source=editor&utm_medium=bee_pro&utm_campaign=free_footer_link" target="_blank" style="color: #9d9d9d; text-decoration: none;">Designed with BEE</a></td>
+                                              </tr>
+                                            </table>
+                                          </td>
+                                        </tr>
+                                      </table>
+                                    </td>
+                                  </tr>
+                                </table>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+          </tbody>
+        </table><!-- End -->
+      </body>
+      
+      </html>`, // html body
+      },
+      (error) => {
+        if (error) {
+          // console.error("Error sending email:", error);
+          reject(error);
+        } else {
+          // console.log("Email sent successfully");
+          resolve();
+        }
+      }
+    );
+    // const data = await resend.emails.send({
+    //   from: "onboarding@resend.dev",
+    //   to: "pranjitkakotiofficial@gmail.com",
+    //   subject: "Congratulations! Order Successfully Placed",
+    //   html: ,
+    // });
+  });
+};
+
+module.exports = {
+  sendConfirmationEmail,
+  sendShipmentEmail,
+  sendCommissionedWorkAcceptanceEmail,
+};
