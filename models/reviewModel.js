@@ -21,6 +21,11 @@ const reviewSchema = new mongoose.Schema({
     ref: "Product",
     required: true,
   },
+  artist: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
   rating: {
     type: Number,
     required: true,

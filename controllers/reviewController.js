@@ -3,7 +3,7 @@ const Review = require("../models/reviewModel");
 // Create a new review
 const createReview = async (req, res) => {
   try {
-    const { user, product, rating, comment, createdAt } = req.body;
+    const { user, product, artist, rating, comment, createdAt } = req.body;
 
     // Check if a review already exists for the user and product
     const existingReview = await Review.findOne({
@@ -22,6 +22,7 @@ const createReview = async (req, res) => {
     const review = await Review.create({
       user,
       product,
+      artist,
       rating,
       comment,
       createdAt,
@@ -36,8 +37,10 @@ const createReview = async (req, res) => {
 // Get all reviews for a product
 const getReviewsByProduct = async (req, res) => {
   try {
-    const { productId } = req.params;
-    const reviews = await Review.find({ product: productId }).populate("user");
+    const { artistId } = req.params;
+    const reviews = await Review.find({ artist: artistId })
+      .populate("user")
+      .populate("artist");
     res.status(200).json(reviews);
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch reviews" });
