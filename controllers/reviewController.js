@@ -38,11 +38,13 @@ const createReview = async (req, res) => {
 const getReviewsByProduct = async (req, res) => {
   try {
     const { artistId } = req.params;
+    // console.log(artistId);
     const reviews = await Review.find({ artist: artistId })
-      .populate("user")
+      .populate("user._id")
       .populate("artist");
     res.status(200).json(reviews);
   } catch (error) {
+    // console.log(error);
     res.status(500).json({ error: "Failed to fetch reviews" });
   }
 };

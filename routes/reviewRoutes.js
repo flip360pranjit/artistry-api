@@ -7,6 +7,6 @@ const reviewController = require("../controllers/reviewController");
 router.post("/", reviewController.createReview);
 
 // Get all reviews for a product
-router.get("/:productId", reviewController.getReviewsByProduct);
+router.get("/:artistId", reviewController.getReviewsByProduct);
 
 module.exports = router;
