@@ -10,7 +10,7 @@ async function createImageUploadSignature(req, res) {
         format: "webp",
         timestamp,
         upload_preset: req.body.uploadPreset,
-        api_key: process.env.CLOUDINARY_API_KEY,
+        // api_key: process.env.CLOUDINARY_API_KEY,
       },
       process.env.CLOUDINARY_API_SECRET
     );
